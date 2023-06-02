@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import FormRow from "../../componets/FormRow";
+import { updateUser } from "../../features/user/userSlice";
 
 const Profile = () => {
   const { isLoading, user } = useSelector((store) => store.user);
@@ -17,21 +18,23 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { name, email, lastName, location } = userData;
-    if (!name || !email || !location) {
+    if (!name || !email || !lastName || !location) {
       toast.error("please fill out all fields");
       return;
     }
+    dispatch(updateUser(userData));
   };
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setUserData({ userData, [name]: value });
+    setUserData({ ...userData, [name]: value });
   };
+
   return (
     <Wrapper>
       <form className='form' onSubmit={handleSubmit}>
-        <h3>Profile</h3>
+        <h3>profile</h3>
         <div className='form-center'>
           <FormRow
             type='text'
@@ -39,8 +42,6 @@ const Profile = () => {
             value={userData.name}
             handleChange={handleChange}
           />
-        </div>
-        <div className='form-center'>
           <FormRow
             type='text'
             labelText='last name'
@@ -48,16 +49,12 @@ const Profile = () => {
             value={userData.lastName}
             handleChange={handleChange}
           />
-        </div>
-        <div className='form-center'>
           <FormRow
             type='email'
             name='email'
             value={userData.email}
             handleChange={handleChange}
           />
-        </div>
-        <div className='form-center'>
           <FormRow
             type='text'
             name='location'
@@ -65,12 +62,11 @@ const Profile = () => {
             handleChange={handleChange}
           />
           <button type='submit' className='btn btn-block' disabled={isLoading}>
-            {isLoading ? "Please wait" : "Save Changes"}
+            {isLoading ? "Please Wait..." : "save changes"}
           </button>
         </div>
       </form>
     </Wrapper>
   );
 };
-
 export default Profile;
