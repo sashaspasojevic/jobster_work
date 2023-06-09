@@ -1,4 +1,9 @@
-const { createSlice } = require("@reduxjs/toolkit");
+import { toast } from "react-toastify";
+import customFetch from "../../../utils/axios";
+import { logoutUser } from "../userSlice";
+import { getUserFromLocalStorage } from "../../../utils/localStorage";
+
+const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 const initialState = {
   isLoading: false,
@@ -13,6 +18,30 @@ const initialState = {
   editJobId: "",
 };
 
+export const createJob = createAsyncThunk(
+  "job/createJob",
+  async (job, thunkAPI) => {
+    try {
+      const resp = await customFetch.post("/jobs", job, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      thunkAPI.dispatch(clearValues());
+      return resp.data;
+    } catch (error) {
+      // basic setup
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+      // logout user
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+      }
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const jobSlice = createSlice({
   name: "job",
   initialState,
@@ -20,9 +49,28 @@ const jobSlice = createSlice({
     handleChange: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
+    clearValues: () => {
+      return {
+        ...initialState,
+        jobLocation: getUserFromLocalStorage()?.location || "",
+      };
+    },
+    extraReducers: {
+      [createJob.pending]: (state) => {
+        state.isLoading = true;
+      },
+      [createJob.fulfilled]: (state, action) => {
+        state.isLoading = false;
+        toast.success("Job Created");
+      },
+      [createJob.rejected]: (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      },
+    },
   },
 });
 
-export const { handleChange } = jobSlice.actions;
+export const { handleChange, clearValues } = jobSlice.actions;
 
 export default jobSlice.reducer;
