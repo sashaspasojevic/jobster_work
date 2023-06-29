@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import Wrapper from "../../assets/wrappers/DashboardFormPage";
-import FormRow from "../../componets/FormRow";
-import { updateUser } from "../../features/user/userSlice";
+import { useState } from 'react';
+import { FormRow } from '../../components';
+import Wrapper from '../../assets/wrappers/DashboardFormPage';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { updateUser } from '../../features/user/userSlice';
 
 const Profile = () => {
   const { isLoading, user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    lastName: user?.lastName || "",
-    location: user?.location || "",
+    name: user?.name || '',
+    email: user?.email || '',
+    lastName: user?.lastName || '',
+    location: user?.location || '',
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { name, email, lastName, location } = userData;
     if (!name || !email || !lastName || !location) {
-      toast.error("please fill out all fields");
+      toast.error('please fill out all fields');
       return;
     }
     dispatch(updateUser(userData));
@@ -62,7 +62,7 @@ const Profile = () => {
             handleChange={handleChange}
           />
           <button type='submit' className='btn btn-block' disabled={isLoading}>
-            {isLoading ? "Please Wait..." : "save changes"}
+            {isLoading ? 'Please Wait...' : 'save changes'}
           </button>
         </div>
       </form>

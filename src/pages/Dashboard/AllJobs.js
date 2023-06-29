@@ -1,5 +1,5 @@
-import React from "react";
-import { JobsContainer, SearchContainer } from "../../componets";
+import { JobsContainer, SearchContainer } from '../../components';
+
 const AllJobs = () => {
   return (
     <>
@@ -8,5 +8,4 @@ const AllJobs = () => {
     </>
   );
 };
-
 export default AllJobs;

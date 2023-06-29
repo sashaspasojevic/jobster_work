@@ -1,4 +1,4 @@
-# the jobster_work site is under development
+# the jobster_work site is published at :
 
 ## https://shiny-choux-220c16.netlify.app/
 

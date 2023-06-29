@@ -1,17 +1,7 @@
-import ChartsContainer from "../../componets/ChartsContainer";
-import StatsContainer from "../../componets/StatsContainer";
-import AddJob from "./AddJob";
-import AllJobs from "./AllJobs";
-import Profile from "./Profile";
-import SharedLayout from "./SharedLayout";
-import Stats from "./Stats";
+import AddJob from './AddJob';
+import AllJobs from './AllJobs';
+import Profile from './Profile';
+import SharedLayout from './SharedLayout';
+import Stats from './Stats';
 
-export {
-  Profile,
-  AddJob,
-  AllJobs,
-  Stats,
-  SharedLayout,
-  StatsContainer,
-  ChartsContainer,
-};
+export { Profile, AddJob, AllJobs, Stats, SharedLayout };
